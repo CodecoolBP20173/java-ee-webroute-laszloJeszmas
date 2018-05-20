@@ -14,6 +14,7 @@ abstract class ServerHttpHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange t) throws IOException{
         String requestMethod = t.getRequestMethod().toString();
+        System.out.println(requestMethod);
         String uri = t.getRequestURI().toString();
         String response = getAnnotation(uri, requestMethod);
         t.sendResponseHeaders(200, response.length());
@@ -27,13 +28,14 @@ abstract class ServerHttpHandler implements HttpHandler {
         for (Method method : getRouteMethods()) {
             Annotation annotation = method.getAnnotation(WebRoute.class);
             WebRoute webroute = (WebRoute) annotation;
+
             try {
                 if (webroute.route().equals(route) && webroute.method().equals(requestMethod)) {
                     Object string = method.invoke(method);
                     return (String) string;
                 } else if (route.contains("user/")) {
                     Class aClass = RouteResponse.class;
-                    Method method1 = aClass.getMethod("test2Page", String.class);
+                    Method method1 = aClass.getMethod("testVariable", String.class);
                     Object string = method.invoke(method1, getName(route));
                     return (String) string;
                 }
@@ -45,17 +47,8 @@ abstract class ServerHttpHandler implements HttpHandler {
     }
 
 
-
-
-
     public Method[] getRouteMethods(){
         return RouteResponse.class.getMethods();
-    }
-
-    public void printMethods(){
-        for (Method method : getRouteMethods()){
-            System.out.println(method);
-        }
     }
 
     public String getName(String string){

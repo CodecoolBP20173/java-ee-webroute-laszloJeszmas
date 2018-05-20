@@ -4,7 +4,18 @@ public class RouteResponse {
 
     @WebRoute(route = "/test")
     public static String mainPage(){
-        return "This is the mainpage!";
+        return "<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <title>Title</title>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "<form action=\"/test\" method=\"post\">\n" +
+                "    <input type=\"submit\">\n" +
+                "</form>\n" +
+                "</body>\n" +
+                "</html>";
     }
 
     @WebRoute(route = "/test1")
@@ -13,7 +24,12 @@ public class RouteResponse {
     }
 
     @WebRoute(route = "/user/<username>")
-    public static String test2Page(String username){
+    public static String testVariable(String username){
         return username;
+    }
+
+    @WebRoute(route = "/test", method = "POST")
+    public static String testPost(){
+        return "This is a Post Method!";
     }
 }
