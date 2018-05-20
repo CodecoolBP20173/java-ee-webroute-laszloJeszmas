@@ -13,35 +13,32 @@ abstract class ServerHttpHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange t) throws IOException{
-        System.out.println(t.getRequestURI().toString());
+        String requestMethod = t.getRequestMethod().toString();
         String uri = t.getRequestURI().toString();
-        String response = getAnnotation(uri);
+        String response = getAnnotation(uri, requestMethod);
         t.sendResponseHeaders(200, response.length());
         OutputStream os = t.getResponseBody();
         os.write(response.getBytes());
         os.close();
     }
 
-    public String getAnnotation(String route) {
+    public String getAnnotation(String route, String requestMethod) {
 
         for (Method method : getRouteMethods()) {
-            //printMethods();
             Annotation annotation = method.getAnnotation(WebRoute.class);
             WebRoute webroute = (WebRoute) annotation;
-           // System.out.println(route.contains("user/"));
-            if (webroute.value().equals(route)){
+            if (webroute.route().equals(route) && webroute.method().equals(requestMethod)){
                 try {
                     Object string = method.invoke(method);
                     return (String) string;
                 } catch (Exception e) {
-                    System.out.println("Error happend");
+                    System.out.println(e);
                 }
             } else if (route.contains("user/")) {
                 try {
                     Class aClass = RouteResponse.class;
                     Method method1 = aClass.getMethod("test2Page", String.class);
-                    Object string = method.invoke(method1, "bla");
-                    System.out.println(string);
+                    Object string = method.invoke(method1, getName(route));
                     return (String) string;
                 } catch (Exception e){
                     System.out.println(e);
@@ -63,5 +60,9 @@ abstract class ServerHttpHandler implements HttpHandler {
         for (Method method : getRouteMethods()){
             System.out.println(method);
         }
+    }
+
+    public String getName(String string){
+        return string.substring(string.lastIndexOf("/") + 1);
     }
 }

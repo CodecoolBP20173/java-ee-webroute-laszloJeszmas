@@ -14,7 +14,6 @@ public class WebServer {
 
     public static void main(String[] args) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
-        System.out.println(server.getAddress());
         server.createContext("/", new ServerHttpHandler() { // Ask mentor what is exactly S is;
             @Override
             public void handle(HttpExchange t) throws IOException {

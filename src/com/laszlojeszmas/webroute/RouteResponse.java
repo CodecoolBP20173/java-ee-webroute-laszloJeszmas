@@ -2,17 +2,17 @@ package com.laszlojeszmas.webroute;
 
 public class RouteResponse {
 
-    @WebRoute("/test")
+    @WebRoute(route = "/test")
     public static String mainPage(){
         return "This is the mainpage!";
     }
 
-    @WebRoute("/test1")
+    @WebRoute(route = "/test1")
     public static String testPage(){
         return "This is the second test page!";
     }
 
-    @WebRoute("/user/<username>")
+    @WebRoute(route = "/user/<username>")
     public static String test2Page(String username){
         return username;
     }
