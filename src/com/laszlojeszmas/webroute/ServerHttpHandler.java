@@ -27,24 +27,20 @@ abstract class ServerHttpHandler implements HttpHandler {
         for (Method method : getRouteMethods()) {
             Annotation annotation = method.getAnnotation(WebRoute.class);
             WebRoute webroute = (WebRoute) annotation;
-            if (webroute.route().equals(route) && webroute.method().equals(requestMethod)){
-                try {
+            try {
+                if (webroute.route().equals(route) && webroute.method().equals(requestMethod)) {
                     Object string = method.invoke(method);
                     return (String) string;
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
-            } else if (route.contains("user/")) {
-                try {
+                } else if (route.contains("user/")) {
                     Class aClass = RouteResponse.class;
                     Method method1 = aClass.getMethod("test2Page", String.class);
                     Object string = method.invoke(method1, getName(route));
                     return (String) string;
-                } catch (Exception e){
-                    System.out.println(e);
+                }
+            } catch (Exception e){
+                System.out.println(e);
                 }
             }
-        }
         return null;
     }
 
