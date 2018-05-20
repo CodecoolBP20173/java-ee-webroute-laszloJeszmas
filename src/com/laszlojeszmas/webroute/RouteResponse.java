@@ -12,7 +12,7 @@ public class RouteResponse {
         return "This is the second test page!";
     }
 
-    @WebRoute("/test/<username>")
+    @WebRoute("/user/<username>")
     public static String test2Page(String username){
         return username;
     }
